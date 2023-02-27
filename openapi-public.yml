@@ -1,0 +1,151 @@
+openapi: 3.0.1
+info:
+  title: api
+  version: 0.0.31
+paths:
+  /payment-request:
+    post:
+      operationId: merchantTransactionService.create
+      tags:
+        - merchantTransactionService
+      parameters: []
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: >-
+                  #/components/schemas/MerchantTransactionCreateMerchantTransactionResponse
+        "401":
+          description: ""
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - type: object
+                    properties:
+                      _error:
+                        type: string
+                        enum:
+                          - InvalidApiKeyError
+                      InvalidApiKeyError:
+                        $ref: >-
+                          #/components/schemas/MerchantTransactionInvalidApiKeyError
+      security: &ref_0
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: >-
+                #/components/schemas/MerchantTransactionCreateMerchantTransactionRequest
+  /payment-request/{transactionId}:
+    get:
+      operationId: merchantTransactionService.get
+      tags:
+        - merchantTransactionService
+      parameters:
+        - name: transactionId
+          in: path
+          required: true
+          schema:
+            $ref: "#/components/schemas/CommonsTransactionId"
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: >-
+                  #/components/schemas/MerchantTransactionGetMerchantTransactionResponse
+        "401":
+          description: ""
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - type: object
+                    properties:
+                      _error:
+                        type: string
+                        enum:
+                          - InvalidApiKeyError
+                      InvalidApiKeyError:
+                        $ref: >-
+                          #/components/schemas/MerchantTransactionInvalidApiKeyError
+        "403":
+          description: ""
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - type: object
+                    properties:
+                      _error:
+                        type: string
+                        enum:
+                          - ForbiddenError
+                      ForbiddenError:
+                        $ref: "#/components/schemas/CommonsForbiddenError"
+      security: *ref_0
+components:
+  schemas:
+    CommonsTransactionId:
+      type: string
+    MerchantTransactionCreateMerchantTransactionResponse:
+      type: object
+      properties:
+        id:
+          $ref: "#/components/schemas/CommonsTransactionId"
+        payment_url:
+          type: string
+      required:
+        - id
+        - payment_url
+    MerchantTransactionGetMerchantTransactionResponse:
+      type: object
+      properties:
+        data:
+          $ref: "#/components/schemas/MerchantTransactionMerchantTransaction"
+        signature:
+          type: string
+      required:
+        - data
+        - signature
+    MerchantTransactionMerchantTransaction:
+      type: object
+      properties:
+        id:
+          $ref: "#/components/schemas/CommonsTransactionId"
+        status:
+          type: string
+        amount_cents:
+          type: integer
+        description:
+          type: string
+      required:
+        - id
+        - status
+        - amount_cents
+    MerchantTransactionCreateMerchantTransactionRequest:
+      type: object
+      properties:
+        amount_cents:
+          type: integer
+        description:
+          type: string
+        redirect_url:
+          type: string
+      required:
+        - amount_cents
+        - redirect_url
+    CommonsForbiddenError: {}
+    MerchantTransactionInvalidApiKeyError: {}
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+servers:
+  - url: https://api.pay.palomma.com/
