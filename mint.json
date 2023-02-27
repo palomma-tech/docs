@@ -38,17 +38,10 @@
   ],
   "navigation": [
     {
-      "group": "Home",
+      "group": "API Reference",
       "pages": [
-        "introduction",
-        "features"
-      ]
-    },
-    {
-      "group": "API Documentation",
-      "pages": [
-        "api-reference/create-payment-request",
-        "api-reference/get-payment-request"
+        "api-reference/create-transaction",
+        "api-reference/get-transaction"
       ]
     }
   ],
