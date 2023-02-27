@@ -1,65 +1,60 @@
 {
   "$schema": "https://mintlify.com/schema.json",
-  "name": "Starter Kit",
-  "logo": {
-    "dark": "/logo/dark.png",
-    "light": "/logo/light.png"
-  },
-  "favicon": "/favicon.png",
+  "name": "Palomma",
+  "logo": "/logo/palomma-logo.png",
+  "favicon": "/favicon.svg",
   "colors": {
-    "primary": "#0069ED",
-    "light": "#4D9CFF",
-    "dark": "#0050B4"
+    "primary": "#4012AB",
+    "light": "#713CEA",
+    "dark": "#230174",
+    "anchors": {
+      "from": "#4012ab",
+      "to": "#161236"
+    }
+  },
+  "api": {
+    "baseUrl": "https://api.pay.palomma.com"
+  },
+  "modeToggle": {
+    "default": "light",
+    "isHidden": true
+  },
+  "topbarCtaButton": {
+    "name": "Dashboard",
+    "url": "https://comercios.palomma.com/"
   },
   "topbarLinks": [
     {
-      "name": "Documentation",
-      "url": "https://mintlify.com/docs"
+      "name": "Contáctanos",
+      "url": "https://www.palomma.com/"
     }
   ],
-  "topbarCtaButton": {
-    "name": "Get Started",
-    "url": "https://github.com/mintlify/starter"
-  },
   "anchors": [
     {
-      "name": "API Reference",
-      "icon": "rectangle-terminal",
-      "url": "api-reference"
-    },
-    {
-      "name": "Changelog",
-      "icon": "list",
-      "url": "https://mintlify.com"
-    },
-    {
-      "name": "Community",
-      "icon": "discord",
-      "url": "https://mintlify.com/community"
+      "name": "Regístrate",
+      "icon": "clipboard",
+      "url": "https://www.palomma.com/#"
     }
   ],
   "navigation": [
     {
       "group": "Home",
-      "pages": ["introduction", "features"]
+      "pages": [
+        "introduction",
+        "features"
+      ]
     },
     {
       "group": "API Documentation",
-      "pages": ["api-reference/authentication"]
-    },
-    {
-      "group": "Endpoint Examples",
       "pages": [
-        "api-reference/endpoint/get",
-        "api-reference/endpoint/create",
-        "api-reference/endpoint/update",
-        "api-reference/endpoint/delete"
+        "api-reference/create-payment-request",
+        "api-reference/get-payment-request"
       ]
     }
   ],
-  "footerSocials": {
-    "twitter": "https://twitter.com/mintlify",
-    "github": "https://github.com/mintlify",
-    "linkedin": "https://www.linkedin.com/company/mintsearch"
-  }
+  "footerSocials":
+    {
+        "instagram": "https://www.instagram.com/palommapay/",
+        "linkedin": "https://www.linkedin.com/company/palomma/"
+    }
 }
