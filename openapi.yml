@@ -1,37 +1,29 @@
 openapi: 3.0.1
 info:
-  title: api
-  version: 0.0.31
+  title: Paloma API
+  version: ''
 paths:
   /payment-request:
     post:
-      operationId: merchantTransactionService.create
+      operationId: merchantTransaction_create
       tags:
-        - merchantTransactionService
+        - MerchantTransaction
       parameters: []
       responses:
-        "200":
-          description: ""
+        '200':
+          description: ''
           content:
             application/json:
               schema:
-                $ref: >-
-                  #/components/schemas/MerchantTransactionCreateMerchantTransactionResponse
-        "401":
-          description: ""
-          content:
-            application/json:
-              schema:
-                oneOf:
-                  - type: object
-                    properties:
-                      _error:
-                        type: string
-                        enum:
-                          - InvalidApiKeyError
-                      InvalidApiKeyError:
-                        $ref: >-
-                          #/components/schemas/MerchantTransactionInvalidApiKeyError
+                $ref: '#/components/schemas/CreateMerchantTransactionResponse'
+              examples:
+                Example1:
+                  value:
+                    id: transaction123
+                    payment_url: https://palomma.com/payment-url
+        '401':
+          description: ''
+      summary: Create a Transaction
       security: &ref_0
         - BearerAuth: []
       requestBody:
@@ -39,86 +31,97 @@ paths:
         content:
           application/json:
             schema:
-              $ref: >-
-                #/components/schemas/MerchantTransactionCreateMerchantTransactionRequest
+              type: object
+              properties:
+                amount_cents:
+                  type: integer
+                  example: 1500
+                description:
+                  type: string
+                redirect_url:
+                  type: string
+                  example: https://palomma.com/redirect
+              required:
+                - amount_cents
+                - redirect_url
+            examples:
+              Example1:
+                value:
+                  amount_cents: 1500
+                  description: Pay subscription
+                  redirect_url: https://palomma.com/redirect
+              Example2:
+                value:
+                  amount_cents: 1500
+                  description: Pay subscription
+                  redirect_url: https://palomma.com/redirect
   /payment-request/{transactionId}:
     get:
-      operationId: merchantTransactionService.get
+      operationId: merchantTransaction_get
       tags:
-        - merchantTransactionService
+        - MerchantTransaction
       parameters:
         - name: transactionId
           in: path
           required: true
           schema:
-            $ref: "#/components/schemas/CommonsTransactionId"
+            $ref: '#/components/schemas/TransactionId'
+          examples:
+            Example1:
+              value: transaction123
       responses:
-        "200":
-          description: ""
+        '200':
+          description: ''
           content:
             application/json:
               schema:
-                $ref: >-
-                  #/components/schemas/MerchantTransactionGetMerchantTransactionResponse
-        "401":
-          description: ""
-          content:
-            application/json:
-              schema:
-                oneOf:
-                  - type: object
-                    properties:
-                      _error:
-                        type: string
-                        enum:
-                          - InvalidApiKeyError
-                      InvalidApiKeyError:
-                        $ref: >-
-                          #/components/schemas/MerchantTransactionInvalidApiKeyError
-        "403":
-          description: ""
-          content:
-            application/json:
-              schema:
-                oneOf:
-                  - type: object
-                    properties:
-                      _error:
-                        type: string
-                        enum:
-                          - ForbiddenError
-                      ForbiddenError:
-                        $ref: "#/components/schemas/CommonsForbiddenError"
+                $ref: '#/components/schemas/GetMerchantTransactionResponse'
+              examples:
+                Example1:
+                  value:
+                    data:
+                      id: transaction123
+                      status: PENDING
+                      amount_cents: 1500
+                      description: Pay subscription
+                    signature: signature
+        '401':
+          description: ''
+        '403':
+          description: ''
+      summary: Get a Transaction
       security: *ref_0
 components:
   schemas:
-    CommonsTransactionId:
+    TransactionId:
       type: string
-    MerchantTransactionCreateMerchantTransactionResponse:
+    CreateMerchantTransactionResponse:
       type: object
       properties:
         id:
-          $ref: "#/components/schemas/CommonsTransactionId"
+          $ref: '#/components/schemas/TransactionId'
         payment_url:
           type: string
+          example: https://palomma.com/payment-url
       required:
         - id
         - payment_url
-    MerchantTransactionGetMerchantTransactionResponse:
+    GetMerchantTransactionResponse:
       type: object
       properties:
         data:
-          $ref: "#/components/schemas/MerchantTransactionMerchantTransaction"
+          $ref: '#/components/schemas/MerchantTransaction'
         signature:
           type: string
+          example: signature
       required:
         - data
         - signature
-    MerchantTransactionMerchantTransaction:
+    MerchantTransaction:
       type: object
       properties:
         id:
-          $ref: "#/components/schemas/CommonsTransactionId"
+          $ref: '#/components/schemas/TransactionId'
         status:
           type: string
         amount_cents:
@@ -129,23 +132,10 @@ components:
         - id
         - status
         - amount_cents
-    MerchantTransactionCreateMerchantTransactionRequest:
-      type: object
-      properties:
-        amount_cents:
-          type: integer
-        description:
-          type: string
-        redirect_url:
-          type: string
-      required:
-        - amount_cents
-        - redirect_url
-    CommonsForbiddenError: {}
-    MerchantTransactionInvalidApiKeyError: {}
   securitySchemes:
     BearerAuth:
       type: http
       scheme: bearer
 servers:
   - url: https://api.pay.palomma.com/
+    description: Production
