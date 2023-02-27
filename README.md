@@ -1,12 +1,6 @@
-# Mintlify Starter Kit
+# Palomma Docs
 
-Click on `Use this template` to copy the Mintlify starter kit. The starter kit contains examples including
-
-- Guide pages
-- Navigation
-- Customizations
-- API Reference pages
-- Use of popular components
+This repo powers the content behind Palomma's docs at https://palomma.mintlify.app
 
 ### 👩‍💻 Development
 
