@@ -40,6 +40,7 @@ paths:
                   type: string
                 redirect_url:
                   type: string
+                  description: Redirect url
                   example: https://palomma.com/redirect
               required:
                 - amount_cents
