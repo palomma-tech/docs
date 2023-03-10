@@ -19,11 +19,12 @@ paths:
               examples:
                 Example1:
                   value:
-                    id: transaction123
-                    payment_url: https://palomma.com/payment-url
+                    id: 8f59ec29-3e8a-4cbd-b4c0-4f480b1fac15
+                    payment_url: >-
+                      https://www.sandbox-pay.palomma.com/?transaccion=8f59ec29-3e8a-4cbd-b4c0-4f480b1fac15
         '401':
           description: ''
-      summary: Create a Payment Request to generate a payment link.
+      summary: Crear solicitud de pago
       security: &ref_0
         - BearerAuth: []
       requestBody:
@@ -35,27 +36,34 @@ paths:
               properties:
                 amount_cents:
                   type: integer
-                  example: 1500
+                  description: El monto de la transacción en centavos.
+                  example: 300000
                 description:
                   type: string
+                  description: >-
+                    Descripción opcional para la solicitud de pago. Puede ser
+                    una referencia de pago o algún texto breve que describa la
+                    transacción.
                 redirect_url:
                   type: string
-                  description: Redirect url
-                  example: https://palomma.com/redirect
+                  description: >-
+                    El URL al que se redirecciona al usuario cuando haya
+                    terminado el pago a través de Palomma.
+                  example: https://palomma.com
               required:
                 - amount_cents
                 - redirect_url
             examples:
               Example1:
                 value:
-                  amount_cents: 1500
+                  amount_cents: 300000
                   description: Pay subscription
-                  redirect_url: https://palomma.com/redirect
+                  redirect_url: https://palomma.com
               Example2:
                 value:
-                  amount_cents: 1500
+                  amount_cents: 300000
                   description: Pay subscription
-                  redirect_url: https://palomma.com/redirect
+                  redirect_url: https://palomma.com
   /payment-requests/{transactionId}:
     get:
       operationId: paymentRequest_get
@@ -103,7 +111,8 @@ components:
           $ref: '#/components/schemas/TransactionId'
         payment_url:
           type: string
-          example: https://palomma.com/payment-url
+          example: >-
+            https://www.sandbox-pay.palomma.com/?transaccion=8f59ec29-3e8a-4cbd-b4c0-4f480b1fac15
       required:
         - id
         - payment_url
