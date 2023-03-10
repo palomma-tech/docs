@@ -18,7 +18,8 @@
   "api": {
     "baseUrl": "https://api.sandbox-pay.palomma.com",
     "auth": {
-      "method": "bearer"
+      "method": "key",
+      "name": "Authorization"
     }
   },
   "topbarCtaButton": {
@@ -49,6 +50,10 @@
         "api-reference/create-payment-request",
         "api-reference/get-payment-request"
       ]
+    },
+    {
+      "group": "Webhook",
+      "pages": ["general/webhook"]
     }
   ],
   "backgroundImage": "/background.png",

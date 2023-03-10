@@ -1,0 +1,62 @@
+---
+title: "Webhook"
+sidebarTitle: "Consultar estado del pago con webhook"
+---
+
+Un **webhook** es una forma eficiente de recibir actualizaciones o eventos en tiempo real desde un servidor a una aplicación o servicio externo. Cuando se utiliza un webhook, la aplicación o servicio **proporciona una URL al servidor** que puede usar para enviar actualizaciones en tiempo real en lugar de esperar a que la aplicación solicite activamente las actualizaciones.
+
+Si quieres recibir notificaciones por webhook, necesitaras proporcionar una URL a la que le llegarán los cambios en el estado de pago. Esta se la puedes dar al equipo en el proceso de [onboarding](/general/onboarding).
+
+El webhook mandará eventos a la URL registrada. Estos tendrán el siguiente formato:
+
+<ParamField path="data" type="string">
+  La informacion del estado de pago en Base64
+</ParamField>
+<ParamField path="signature" type="string">
+  Firma sha256 generada con el hash de data concatenada con la integrity_key
+</ParamField>
+
+```json
+{
+  "data": "eyJpZCI6IjBjOTVmNjgyLWE0NjAtNGFjOC05YmY4LWIyZjFhNzg4ZDc1ZCIsInN0YXR1cyI6IkFQUFJPVkVEIiwiYW1vdW50X2NlbnRzIjoiMzAwMDAwIn0=",
+  "signature": "49f3631cd141e78b46a274f180785bb9300f719b89187da7341196bd9e917ca8"
+}
+```
+
+La firma se puede verificar de la siguiente manera:
+
+<CodeGroup>
+
+```javascript verify.js
+import * as crypto from "crypto";
+
+// Recibir el evento del webhook
+const { data, signatureWebhook } = {
+  data: "eyJpZCI6IjBjOTVmNjgyLWE0NjAtNGFjOC05YmY4LWIyZjFhNzg4ZDc1ZCIsInN0YXR1cyI6IkFQUFJPVkVEIiwiYW1vdW50X2NlbnRzIjoiMzAwMDAwIn0=",
+  signature: "49f3631cd141e78b46a274f180785bb9300f719b89187da7341196bd9e917ca8",
+};
+
+// Esta nunca se debe compartir!
+const integrityKey = "integrityKey_dev_5278918e8-530b-4cf1-8eac-df87481c964f";
+
+const signature = crypto
+  .createHash("sha256")
+  .update(data + integrityKey)
+  .digest("hex");
+
+if (signature !== signatureWebhook) {
+  // Error! Firma no es valida y no se procesa el evento
+}
+
+const parsedData = JSON.parse(Buffer.from(data, "base64").toString("utf-8"));
+```
+
+</CodeGroup>
+
+```
+parsedData = {
+  id: '0c95f682-a460-4ac8-9bf8-b2f1a788d75d',
+  status: 'APPROVED',
+  amount_cents: '300000'
+}
+```

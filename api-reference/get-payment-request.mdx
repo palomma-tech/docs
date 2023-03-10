@@ -3,3 +3,8 @@ title: "Estado del pago"
 sidebarTitle: "Consultar estado del pago"
 openapi: "GET /payment-requests/{transactionId}"
 ---
+
+<Tip>
+  Recomendamos utilizar el [webhook](/general/webhook) porque usa menos recursos
+  y tiene menor latencia que hacer Long Polling.
+</Tip>
