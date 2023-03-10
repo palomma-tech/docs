@@ -12,6 +12,9 @@
       "to": "#4012ab"
     }
   },
+  "modeToggle": {
+    "default": "light"
+  },
   "api": {
     "baseUrl": "https://api.pay.palomma.com",
     "auth": {
