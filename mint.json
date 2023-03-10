@@ -5,19 +5,18 @@
   "favicon": "/favicon.svg",
   "colors": {
     "primary": "#4012AB",
-    "light": "#713CEA",
-    "dark": "#230174",
+    "light": "#8F62E5",
+    "dark": "#4012AB",
     "anchors": {
-      "from": "#4012ab",
-      "to": "#161236"
+      "from": "#161236",
+      "to": "#4012ab"
     }
   },
   "api": {
-    "baseUrl": "https://api.pay.palomma.com"
-  },
-  "modeToggle": {
-    "default": "light",
-    "isHidden": true
+    "baseUrl": "https://api.pay.palomma.com",
+    "auth": {
+      "method": "bearer"
+    }
   },
   "topbarCtaButton": {
     "name": "Dashboard",
@@ -40,11 +39,12 @@
     {
       "group": "API Reference",
       "pages": [
-        "api-reference/create-transaction",
-        "api-reference/get-transaction"
+        "api-reference/create-payment-request",
+        "api-reference/get-payment-request"
       ]
     }
   ],
+  "backgroundImage": "/background.png",
   "footerSocials":
     {
         "instagram": "https://www.instagram.com/palommapay/",
