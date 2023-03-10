@@ -16,7 +16,7 @@
     "default": "light"
   },
   "api": {
-    "baseUrl": "https://api.pay.palomma.com",
+    "baseUrl": "https://api.sandbox-pay.palomma.com",
     "auth": {
       "method": "bearer"
     }
