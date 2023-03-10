@@ -26,7 +26,7 @@ paths:
           description: ''
       summary: Crear solicitud de pago
       security: &ref_0
-        - BearerAuth: []
+        - BasicAuth: []
       requestBody:
         required: true
         content:
@@ -109,8 +109,12 @@ components:
       properties:
         id:
           $ref: '#/components/schemas/TransactionId'
+          description: Un identificador único para la solicitud de pago.
         payment_url:
           type: string
+          description: >-
+            El enlace de pago al que se debe redirigir al usuario para realizar
+            el pago.
           example: >-
             https://www.sandbox-pay.palomma.com/?transaccion=8f59ec29-3e8a-4cbd-b4c0-4f480b1fac15
       required:
@@ -134,9 +138,9 @@ components:
         - status
         - amount_cents
   securitySchemes:
-    BearerAuth:
+    BasicAuth:
       type: http
-      scheme: bearer
+      scheme: basic
 servers:
   - url: https://api.pay.palomma.com/
     description: Production
