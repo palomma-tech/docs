@@ -13,7 +13,10 @@
     }
   },
   "api": {
-    "baseUrl": "https://api.pay.palomma.com"
+    "baseUrl": "https://api.pay.palomma.com",
+    "auth": {
+      "method": "bearer"
+    }
   },
   "topbarCtaButton": {
     "name": "Dashboard",
