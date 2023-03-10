@@ -25,8 +25,6 @@ paths:
         '401':
           description: ''
       summary: Crear solicitud de pago
-      security: &ref_0
-        - BearerAuth: []
       requestBody:
         required: true
         content:
@@ -72,12 +70,13 @@ paths:
       parameters:
         - name: transactionId
           in: path
+          description: Un identificador único para la solicitud de pago.
           required: true
           schema:
             $ref: '#/components/schemas/TransactionId'
           examples:
             Example1:
-              value: transaction123
+              value: 8f59ec29-3e8a-4cbd-b4c0-4f480b1fac15
       responses:
         '200':
           description: ''
@@ -88,9 +87,9 @@ paths:
               examples:
                 Example1:
                   value:
-                    id: transaction123
+                    id: 8f59ec29-3e8a-4cbd-b4c0-4f480b1fac15
                     status: PENDING
-                    amount_cents: 1500
+                    amount_cents: 300000
                     description: Pay subscription
         '401':
           description: ''
@@ -98,8 +97,7 @@ paths:
           description: ''
         '404':
           description: ''
-      summary: Get the metadata, including status, for an existing Payment Request.
-      security: *ref_0
+      summary: Revisar estado del pago
 components:
   schemas:
     TransactionId:
@@ -125,14 +123,22 @@ components:
       properties:
         id:
           $ref: '#/components/schemas/TransactionId'
+          description: Un identificador único para la solicitud de pago.
         status:
           type: string
+          description: >-
+            El estado actual de la solicitud de pago (“PENDING”, “PROCESSING”,
+            “APPROVED”, “REJECTED”, “ERROR”).
           example: PENDING
         amount_cents:
           type: integer
-          example: 1500
+          description: El monto de la transacción en centavos.
+          example: 300000
         description:
           type: string
+          description: >-
+            Descripción opcional para la solicitud de pago. Puede ser una
+            referencia de pago o algún texto breve que describa la transacción.
       required:
         - id
         - status
