@@ -26,7 +26,7 @@ paths:
           description: ''
       summary: Crear solicitud de pago
       security: &ref_0
-        - BasicAuth: []
+        - BearerAuth: []
       requestBody:
         required: true
         content:
@@ -138,9 +138,9 @@ components:
         - status
         - amount_cents
   securitySchemes:
-    BasicAuth:
+    BearerAuth:
       type: http
-      scheme: basic
+      scheme: bearer
 servers:
   - url: https://api.pay.palomma.com/
     description: Production
