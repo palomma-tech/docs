@@ -1,13 +1,13 @@
 openapi: 3.0.1
 info:
-  title: Paloma API
+  title: Palomma API
   version: ''
 paths:
-  /payment-request:
+  /payment-requests:
     post:
-      operationId: merchantTransaction_create
+      operationId: paymentRequest_post
       tags:
-        - MerchantTransaction
+        - PaymentRequest
       parameters: []
       responses:
         '200':
@@ -15,7 +15,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CreateMerchantTransactionResponse'
+                $ref: '#/components/schemas/CreatePaymentRequestResponse'
               examples:
                 Example1:
                   value:
@@ -23,7 +23,7 @@ paths:
                     payment_url: https://palomma.com/payment-url
         '401':
           description: ''
-      summary: Create a Transaction
+      summary: Create a Payment Request to generate a payment link.
       security: &ref_0
         - BearerAuth: []
       requestBody:
@@ -55,11 +55,11 @@ paths:
                   amount_cents: 1500
                   description: Pay subscription
                   redirect_url: https://palomma.com/redirect
-  /payment-request/{transactionId}:
+  /payment-requests/{transactionId}:
     get:
-      operationId: merchantTransaction_get
+      operationId: paymentRequest_get
       tags:
-        - MerchantTransaction
+        - PaymentRequest
       parameters:
         - name: transactionId
           in: path
@@ -75,27 +75,27 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/GetMerchantTransactionResponse'
+                $ref: '#/components/schemas/PaymentRequest'
               examples:
                 Example1:
                   value:
-                    data:
-                      id: transaction123
-                      status: PENDING
-                      amount_cents: 1500
-                      description: Pay subscription
-                    signature: signature
+                    id: transaction123
+                    status: PENDING
+                    amount_cents: 1500
+                    description: Pay subscription
         '401':
           description: ''
         '403':
           description: ''
-      summary: Get a Transaction
+        '404':
+          description: ''
+      summary: Get the metadata, including status, for an existing Payment Request.
       security: *ref_0
 components:
   schemas:
     TransactionId:
       type: string
-    CreateMerchantTransactionResponse:
+    CreatePaymentRequestResponse:
       type: object
       properties:
         id:
@@ -106,26 +106,17 @@ components:
       required:
         - id
         - payment_url
-    GetMerchantTransactionResponse:
-      type: object
-      properties:
-        data:
-          $ref: '#/components/schemas/MerchantTransaction'
-        signature:
-          type: string
-          example: signature
-      required:
-        - data
-        - signature
-    MerchantTransaction:
+    PaymentRequest:
       type: object
       properties:
         id:
           $ref: '#/components/schemas/TransactionId'
         status:
           type: string
+          example: PENDING
         amount_cents:
           type: integer
+          example: 1500
         description:
           type: string
       required:
@@ -139,3 +130,5 @@ components:
 servers:
   - url: https://api.pay.palomma.com/
     description: Production
+  - url: https://api.sandbox-pay.palomma.com/
+    description: Sandbox
