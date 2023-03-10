@@ -1,6 +1,6 @@
 # Palomma Docs
 
-This repo powers the content behind Palomma's docs at https://palomma.mintlify.app
+This repository powers the content behind Palomma's docs at https://palomma.mintlify.app
 
 ### 👩‍💻 Development
 
