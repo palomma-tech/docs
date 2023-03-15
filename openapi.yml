@@ -128,7 +128,7 @@ components:
           type: string
           description: >-
             El estado actual de la solicitud de pago (“PENDING”, “PROCESSING”,
-            “APPROVED”, “REJECTED”, “ERROR”).
+            “APPROVED”, "DECLINED", “ERROR”).
           example: PENDING
         amount_cents:
           type: integer
