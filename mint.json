@@ -42,7 +42,7 @@
   "navigation": [
     {
       "group": "General",
-      "pages": ["general/intro", "general/onboarding"]
+      "pages": ["general/intro", "general/onboarding", "general/estados"]
     },
     {
       "group": "Nuestra API",

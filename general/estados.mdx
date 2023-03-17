@@ -1,0 +1,28 @@
+---
+title: "Estados"
+sidebarTitle: "Estados del pago"
+---
+
+<CardGroup cols={1}>
+  <Card title="PENDING" icon="square-1" color="#0285c7">
+    Estado inicial de la solicitud de pago.
+  </Card>
+  <Card title="CANCELLED" icon="square-2" color="#dc2626">
+    Ocurre cuando la solicitud de pago queda en estado PENDING por más del
+    tiempo de expiración (ttl).
+  </Card>
+  <Card title="PROCESSING" icon="square-3" color="#0285c7">
+    La solicitud de pago se ha mandado al banco. Palomma está esperando la
+    respuesta del banco y ya no lo podemos cancelar.
+  </Card>
+  <Card title="APPROVED" icon="square-4" color="#16a34a">
+    El pago ha sido exitoso.
+  </Card>
+  <Card title="DECLINED" icon="square-5" color="#dc2626">
+    El pago ha sido declinado por el banco.
+  </Card>
+  <Card title="ERROR" icon="square-6" color="#dc2626">
+    No recibimos respuesta del banco. Palomma se encarga de revisar estos casos
+    y resolverlos con el banco.
+  </Card>
+</CardGroup>
