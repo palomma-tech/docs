@@ -24,6 +24,16 @@ paths:
                       https://www.sandbox-pay.palomma.com/?transaccion=8f59ec29-3e8a-4cbd-b4c0-4f480b1fac15
         '401':
           description: ''
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - type: object
+                    properties:
+                      errorName:
+                        type: string
+                        enum:
+                          - InvalidApiKeyError
       summary: Crear solicitud de pago
       requestBody:
         required: true
@@ -36,18 +46,24 @@ paths:
                   type: integer
                   description: El monto de la transacción en centavos.
                   example: 300000
-                description:
-                  type: string
-                  description: >-
-                    Descripción opcional para la solicitud de pago. Puede ser
-                    una referencia de pago o algún texto breve que describa la
-                    transacción.
                 redirect_url:
                   type: string
                   description: >-
                     El URL al que se redirecciona al usuario cuando haya
                     terminado el pago a través de Palomma.
                   example: https://palomma.com
+                description:
+                  type: string
+                  description: >-
+                    Descripción opcional para la solicitud de pago. Puede ser
+                    una referencia de pago o algún texto breve que describa la
+                    transacción.
+                ttl:
+                  type: integer
+                  description: >-
+                    El tiempo en segundos que puede quedar la transacción en
+                    estado pendiente antes de ser cancelada. Default 720 (12
+                    minutos).
               required:
                 - amount_cents
                 - redirect_url
@@ -93,10 +109,40 @@ paths:
                     description: Pay subscription
         '401':
           description: ''
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - type: object
+                    properties:
+                      errorName:
+                        type: string
+                        enum:
+                          - InvalidApiKeyError
         '403':
           description: ''
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - type: object
+                    properties:
+                      errorName:
+                        type: string
+                        enum:
+                          - ForbiddenError
         '404':
           description: ''
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - type: object
+                    properties:
+                      errorName:
+                        type: string
+                        enum:
+                          - PaymentRequestNotFoundError
       summary: Revisar estado del pago
 components:
   schemas:
@@ -128,7 +174,7 @@ components:
           type: string
           description: >-
             El estado actual de la solicitud de pago (“PENDING”, “PROCESSING”,
-            “APPROVED”, "DECLINED", “ERROR”).
+            “APPROVED”, "DECLINED", “ERROR”, "CANCELLED").
           example: PENDING
         amount_cents:
           type: integer
