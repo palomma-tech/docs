@@ -44,7 +44,9 @@ paths:
               properties:
                 amount_cents:
                   type: integer
-                  description: El monto de la transacción en centavos.
+                  description: >-
+                    El monto de la transacción en centavos. Debe ser mayor a
+                    300000.
                   example: 300000
                 redirect_url:
                   type: string
@@ -62,8 +64,10 @@ paths:
                   type: integer
                   description: >-
                     El tiempo en segundos que puede quedar la transacción en
-                    estado pendiente antes de ser cancelada. Default 720 (12
-                    minutos).
+                    estado pendiente antes de ser cancelada. Si no lo
+                    especificas y no está especificado para tu comercio en el
+                    [Onboarding](/general/onboarding), la solicitud de pago no
+                    expira.
               required:
                 - amount_cents
                 - redirect_url
