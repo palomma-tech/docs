@@ -1,12 +1,14 @@
 Para hacer el onboarding con Palomma, necesitamos la siguiente información:
 
 - Nombre del comercio
-- Logotipo del comercio
-- Email para iniciar sesión en el dashboard Palomma
-- Número de celular (si se va a habilitar confirmación de pago por WhatsApp)
+- Logotipo del comercio (opcional)
+- Email administrador para iniciar sesión en el dashboard Palomma
+- Número de celular administrador para recibir confirmación de pago por WhatsApp (opcional)
+- Email de soporte para mostrar a los usuarios en caso de que necesiten contactar al comercio
+- Número de celular de soporte para mostrar a los usuarios en caso de que necesiten contactar al comercio (opcional)
 - Información bancaria para desembolsar pagos
-- URL de redirección de pagos predeterminada. Es la URL hacia donde se redirecciona el usuario después de completar un pago. Puede ser sobreescrito en solicitudes especificas.
-- Tiempo de validez (ttl) para solicitudes de predeterminado. Es el tiempo en segundos que puede quedar la transacción en estado pendiente antes de ser cancelada. Puede ser sobreescrito en solicitudes especificas.
+- URL de redirección de pagos predeterminada. Es la URL hacia donde se redirecciona el usuario después de completar un pago. Si no se especifica, la URL de redirección predeterminada es la página de [Palomma](https://www.palomma.com/). Puede ser sobreescrito en solicitudes especificas (opcional)
+- Tiempo de validez (ttl) para solicitudes de predeterminado. Es el tiempo en segundos que puede quedar la transacción en estado pendiente antes de ser cancelada. Si no se especifica el comportamiento predeterminado es que las transacciones no expiren. Puede ser sobreescrito en solicitudes especificas (opcional)
 
 <Note>
   Esta información puede ser entregada
