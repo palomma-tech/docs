@@ -22,6 +22,20 @@ paths:
                     id: 8f59ec29-3e8a-4cbd-b4c0-4f480b1fac15
                     payment_url: >-
                       https://www.sandbox-pay.palomma.com/?transaccion=8f59ec29-3e8a-4cbd-b4c0-4f480b1fac15
+        '400':
+          description: ''
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - type: object
+                    properties:
+                      errorName:
+                        type: string
+                        enum:
+                          - BadRequestError
+                      content:
+                        $ref: '#/components/schemas/ErrorBody'
         '401':
           description: ''
           content:
@@ -46,31 +60,31 @@ paths:
                   type: integer
                   description: >-
                     El monto de la transacción en centavos. Debe ser mayor a
-                    300000.
+                    300.000, y menor a 80.000.000.
                   example: 300000
-                redirect_url:
-                  type: string
-                  description: >-
-                    El URL al que se redirecciona al usuario cuando haya
-                    terminado el pago a través de Palomma.
-                  example: https://palomma.com
                 description:
                   type: string
                   description: >-
                     Descripción opcional para la solicitud de pago. Puede ser
                     una referencia de pago o algún texto breve que describa la
-                    transacción.
+                    transacción. El usuario nunca verá esta descripción.
+                redirect_url:
+                  type: string
+                  description: >-
+                    El URL al que se redirecciona al usuario cuando haya
+                    terminado el pago a través de Palomma. Sobreescribe el URL
+                    de redirección configurado en el
+                    [Onboarding](/general/onboarding).
                 ttl:
                   type: integer
                   description: >-
                     El tiempo en segundos que puede quedar la transacción en
-                    estado pendiente antes de ser cancelada. Si no lo
-                    especificas y no está especificado para tu comercio en el
+                    estado pendiente antes de ser cancelada. Si no se especifica
+                    y no está especificado para tu comercio en el
                     [Onboarding](/general/onboarding), la solicitud de pago no
                     expira.
               required:
                 - amount_cents
-                - redirect_url
             examples:
               Example1:
                 value:
@@ -111,6 +125,20 @@ paths:
                     status: PENDING
                     amount_cents: 300000
                     description: Pay subscription
+        '400':
+          description: ''
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - type: object
+                    properties:
+                      errorName:
+                        type: string
+                        enum:
+                          - BadRequestError
+                      content:
+                        $ref: '#/components/schemas/ErrorBody'
         '401':
           description: ''
           content:
@@ -135,6 +163,8 @@ paths:
                         type: string
                         enum:
                           - ForbiddenError
+                      content:
+                        $ref: '#/components/schemas/ErrorBody'
         '404':
           description: ''
           content:
@@ -152,6 +182,11 @@ components:
   schemas:
     TransactionId:
       type: string
+    ErrorBody:
+      type: object
+      properties:
+        message:
+          type: string
     CreatePaymentRequestResponse:
       type: object
       properties:
@@ -177,8 +212,8 @@ components:
         status:
           type: string
           description: >-
-            El estado actual de la solicitud de pago (“PENDING”, “PROCESSING”,
-            “APPROVED”, "DECLINED", “ERROR”, "CANCELLED").
+            El estado actual de la solicitud de pago. [Posibles
+            estados.](/general/estados)
           example: PENDING
         amount_cents:
           type: integer
