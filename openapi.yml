@@ -71,8 +71,8 @@ paths:
                 redirect_url:
                   type: string
                   description: >-
-                    El URL al que se redirecciona al usuario cuando haya
-                    terminado el pago a través de Palomma. Sobreescribe el URL
+                    La URL a la que se redirecciona al usuario cuando haya
+                    terminado el pago a través de Palomma. Sobreescribe la URL
                     de redirección configurado en el
                     [Onboarding](/general/onboarding).
                 ttl:
@@ -191,9 +191,172 @@ paths:
                         enum:
                           - PaymentRequestNotFoundError
       summary: Revisar estado del pago
+  /subscription-requests:
+    post:
+      operationId: subscriptionRequest_post
+      tags:
+        - SubscriptionRequest
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateSubscriptionRequestResponse'
+              examples:
+                Example1:
+                  value:
+                    id: 8f59ec29-3e8a-4cbd-b4c0-4f480b1fac15
+                    subscription_url: >-
+                      https://www.sandbox-pay.palomma.com/?suscripcion=8f59ec29-3e8a-4cbd-b4c0-4f480b1fac15
+        '401':
+          description: ''
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - type: object
+                    properties:
+                      errorName:
+                        type: string
+                        enum:
+                          - UnauthorizedError
+                      content:
+                        $ref: '#/components/schemas/ErrorBody'
+      summary: Crear solicitud de suscripción
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                amount_cents:
+                  type: integer
+                  description: >-
+                    El monto en centavos que se debe cobrar en cada fecha de
+                    cobro. Debe ser mayor a 300000.
+                  example: 300000
+                redirect_url:
+                  type: string
+                  description: >-
+                    La URL a la que se redirecciona al usuario cuando haya
+                    terminado el flujo de suscripción a través de Palomma.
+                  example: https://palomma.com
+                description:
+                  type: string
+                  description: >-
+                    Descripción opcional para la suscripción. Puede ser una
+                    referencia o algún texto breve que describa la suscripción.
+                interval:
+                  type: integer
+                  description: >-
+                    Número de interal_units entre fechas de cobro. Debe ser
+                    mayor o igual a 1. Por defecto es 1.
+                interval_unit:
+                  $ref: '#/components/schemas/IntervalUnit'
+                  description: >-
+                    Unidad para especificar tiempo entre fechas de cobro. Debe
+                    ser "day", "week", "month" o "year".
+                count:
+                  type: integer
+                  description: Número de pagos que se deben hacer por esta suscripción
+                start_date:
+                  type: string
+                  description: >-
+                    La fecha (YYYY-MM-DD) en la que se debe realizar el primer
+                    pago.
+              required:
+                - amount_cents
+                - redirect_url
+                - interval_unit
+            examples:
+              Example1:
+                value:
+                  amount_cents: 300000
+                  description: Pay subscription
+                  redirect_url: https://palomma.com
+                  interval_unit: month
+  /subscription-requests/{subscriptionId}:
+    get:
+      operationId: subscriptionRequest_get
+      tags:
+        - SubscriptionRequest
+      parameters:
+        - name: subscriptionId
+          in: path
+          description: Un identificador único para la solicitud de suscripción.
+          required: true
+          schema:
+            $ref: '#/components/schemas/SubscriptionId'
+          examples:
+            Example1:
+              value: 8f59ec29-3e8a-4cbd-b4c0-4f480b1fac15
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubscriptionRequest'
+              examples:
+                Example1:
+                  value:
+                    id: 8f59ec29-3e8a-4cbd-b4c0-4f480b1fac15
+                    status: ACTIVE
+                    amount_cents: 300000
+                    description: Pay subscription
+                    interval: 1
+                    interval_unit: month
+        '401':
+          description: ''
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - type: object
+                    properties:
+                      errorName:
+                        type: string
+                        enum:
+                          - UnauthorizedError
+                      content:
+                        $ref: '#/components/schemas/ErrorBody'
+        '403':
+          description: ''
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - type: object
+                    properties:
+                      errorName:
+                        type: string
+                        enum:
+                          - ForbiddenError
+                      content:
+                        $ref: '#/components/schemas/ErrorBody'
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - type: object
+                    properties:
+                      errorName:
+                        type: string
+                        enum:
+                          - NotFoundError
+                      content:
+                        $ref: '#/components/schemas/ErrorBody'
+      summary: Revisar estado de la suscripción
 components:
   schemas:
     TransactionId:
+      type: string
+    SubscriptionId:
       type: string
     ErrorBody:
       type: object
@@ -247,6 +410,64 @@ components:
         - id
         - status
         - amount_cents
+    CreateSubscriptionRequestResponse:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/SubscriptionId'
+          description: Un identificador único para la solicitud de suscripción.
+        subscription_url:
+          type: string
+          description: >-
+            El enlace de suscripción al que se debe redirigir al usuario para
+            completar la suscripción.
+          example: >-
+            https://www.sandbox-pay.palomma.com/?suscripcion=8f59ec29-3e8a-4cbd-b4c0-4f480b1fac15
+      required:
+        - id
+        - subscription_url
+    SubscriptionRequest:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/SubscriptionId'
+          description: Un identificador único para la solicitud de suscripción.
+        status:
+          type: string
+          description: El estado actual de la solicitud de suscripción.
+          example: ACTIVE
+        amount_cents:
+          type: integer
+          description: El monto en centavos que se debe cobrar en cada fecha de cobro.
+          example: 300000
+        description:
+          type: string
+          description: >-
+            Descripción opcional para la solicitud de suscripción. Puede ser una
+            referencia o algún texto breve que describa la suscripción.
+        interval:
+          type: integer
+          description: >-
+            Número de interal_units entre fechas de cobro. Debe ser mayor o
+            igual a 1. Por defecto es 1.
+        interval_unit:
+          $ref: '#/components/schemas/IntervalUnit'
+          description: >-
+            Unidad para especificar tiempo entre fechas de cobro. Debe ser
+            "day", "week", "month" o "year".
+      required:
+        - id
+        - status
+        - amount_cents
+        - interval_unit
+    IntervalUnit:
+      type: string
+      enum:
+        - hour
+        - day
+        - week
+        - month
+        - year
   securitySchemes:
     BearerAuth:
       type: http
