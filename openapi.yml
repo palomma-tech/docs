@@ -256,9 +256,7 @@ paths:
                     mayor o igual a 1. Por defecto es 1.
                 interval_unit:
                   $ref: '#/components/schemas/IntervalUnit'
-                  description: >-
-                    Unidad para especificar tiempo entre fechas de cobro. Debe
-                    ser "day", "week", "month" o "year".
+                  description: Unidad para especificar tiempo entre fechas de cobro.
                 count:
                   type: integer
                   description: Número de pagos que se deben hacer por esta suscripción
@@ -352,6 +350,79 @@ paths:
                       content:
                         $ref: '#/components/schemas/ErrorBody'
       summary: Revisar estado de la suscripción
+    delete:
+      operationId: subscriptionRequest_delete
+      tags:
+        - SubscriptionRequest
+      parameters:
+        - name: subscriptionId
+          in: path
+          description: Un identificador único para la solicitud de suscripción.
+          required: true
+          schema:
+            $ref: '#/components/schemas/SubscriptionId'
+          examples:
+            Example1:
+              value: 8f59ec29-3e8a-4cbd-b4c0-4f480b1fac15
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubscriptionRequest'
+              examples:
+                Example1:
+                  value:
+                    id: 8f59ec29-3e8a-4cbd-b4c0-4f480b1fac15
+                    status: CANCELLED
+                    amount_cents: 300000
+                    description: Pay subscription
+                    interval: 1
+                    interval_unit: month
+        '401':
+          description: ''
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - type: object
+                    properties:
+                      errorName:
+                        type: string
+                        enum:
+                          - UnauthorizedError
+                      content:
+                        $ref: '#/components/schemas/ErrorBody'
+        '403':
+          description: ''
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - type: object
+                    properties:
+                      errorName:
+                        type: string
+                        enum:
+                          - ForbiddenError
+                      content:
+                        $ref: '#/components/schemas/ErrorBody'
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - type: object
+                    properties:
+                      errorName:
+                        type: string
+                        enum:
+                          - NotFoundError
+                      content:
+                        $ref: '#/components/schemas/ErrorBody'
+      summary: Cancelar suscripción
 components:
   schemas:
     TransactionId:
@@ -452,9 +523,7 @@ components:
             igual a 1. Por defecto es 1.
         interval_unit:
           $ref: '#/components/schemas/IntervalUnit'
-          description: >-
-            Unidad para especificar tiempo entre fechas de cobro. Debe ser
-            "day", "week", "month" o "year".
+          description: Unidad para especificar tiempo entre fechas de cobro.
       required:
         - id
         - status
@@ -463,7 +532,6 @@ components:
     IntervalUnit:
       type: string
       enum:
-        - hour
         - day
         - week
         - month
