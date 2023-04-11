@@ -49,7 +49,8 @@
       "pages": [
         "api-reference/create-payment-request",
         "api-reference/get-payment-request",
-        "api-reference/create-subscription-request"
+        "api-reference/create-subscription-request",
+        "api-reference/delete-subscription-request"
       ]
     },
     {
