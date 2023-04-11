@@ -48,7 +48,8 @@
       "group": "Nuestra API",
       "pages": [
         "api-reference/create-payment-request",
-        "api-reference/get-payment-request"
+        "api-reference/get-payment-request",
+        "api-reference/create-subscription-request"
       ]
     },
     {
