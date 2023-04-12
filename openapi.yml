@@ -96,6 +96,16 @@ paths:
                     especificada, el usuario no podrá completar su pago. Si no
                     se especifica, no se verifica la cédula. Esta verificación
                     aún no está activa con todos los bancos disponibles.
+                merchant_display_name:
+                  type: string
+                  description: >-
+                    Especifica un nombre alternativo para el comercio que se le
+                    muestra al usuario.
+                merchant_support_info:
+                  type: string
+                  description: >-
+                    Información de contacto alternativa que se le muestra al
+                    usuario en la confirmación de pago.
               required:
                 - amount_cents
             examples:
