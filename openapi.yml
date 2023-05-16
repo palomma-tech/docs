@@ -47,7 +47,9 @@ paths:
                       errorName:
                         type: string
                         enum:
-                          - InvalidApiKeyError
+                          - UnauthorizedError
+                      content:
+                        $ref: '#/components/schemas/ErrorBody'
       summary: Crear solicitud de pago
       requestBody:
         required: true
@@ -114,11 +116,6 @@ paths:
                   amount_cents: 300000
                   description: Pay subscription
                   redirect_url: https://palomma.com
-              Example2:
-                value:
-                  amount_cents: 300000
-                  description: Pay subscription
-                  redirect_url: https://palomma.com
   /payment-requests/{transactionId}:
     get:
       operationId: paymentRequest_get
@@ -173,7 +170,9 @@ paths:
                       errorName:
                         type: string
                         enum:
-                          - InvalidApiKeyError
+                          - UnauthorizedError
+                      content:
+                        $ref: '#/components/schemas/ErrorBody'
         '403':
           description: ''
           content:
@@ -220,6 +219,20 @@ paths:
                     id: 8f59ec29-3e8a-4cbd-b4c0-4f480b1fac15
                     subscription_url: >-
                       https://www.sandbox-pay.palomma.com/?suscripcion=8f59ec29-3e8a-4cbd-b4c0-4f480b1fac15
+        '400':
+          description: ''
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - type: object
+                    properties:
+                      errorName:
+                        type: string
+                        enum:
+                          - BadRequestError
+                      content:
+                        $ref: '#/components/schemas/ErrorBody'
         '401':
           description: ''
           content:
@@ -317,6 +330,20 @@ paths:
                     description: Pay subscription
                     interval: 1
                     interval_unit: month
+        '400':
+          description: ''
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - type: object
+                    properties:
+                      errorName:
+                        type: string
+                        enum:
+                          - BadRequestError
+                      content:
+                        $ref: '#/components/schemas/ErrorBody'
         '401':
           description: ''
           content:
