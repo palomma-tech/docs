@@ -330,6 +330,7 @@ paths:
                     description: Pay subscription
                     interval: 1
                     interval_unit: month
+                    past_payments: []
         '400':
           description: ''
           content:
@@ -417,6 +418,7 @@ paths:
                     description: Pay subscription
                     interval: 1
                     interval_unit: month
+                    past_payments: []
         '401':
           description: ''
           content:
@@ -462,10 +464,19 @@ paths:
       summary: Cancelar suscripción
 components:
   schemas:
+    MerchantId:
+      type: string
     TransactionId:
       type: string
     SubscriptionId:
       type: string
+    PaymentRail:
+      type: string
+      enum:
+        - bancolombia_token
+        - nequi_token
+        - daviplata_api
+        - pse
     ErrorBody:
       type: object
       properties:
@@ -561,11 +572,16 @@ components:
         interval_unit:
           $ref: '#/components/schemas/IntervalUnit'
           description: Unidad para especificar tiempo entre fechas de cobro.
+        past_payments:
+          type: array
+          items:
+            $ref: '#/components/schemas/Transaction'
       required:
         - id
         - status
         - amount_cents
         - interval_unit
+        - past_payments
     IntervalUnit:
       type: string
       enum:
@@ -573,6 +589,48 @@ components:
         - week
         - month
         - year
+    Transaction:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/TransactionId'
+        amount_cents:
+          type: integer
+        merchant:
+          $ref: '#/components/schemas/MerchantId'
+        status:
+          $ref: '#/components/schemas/TransactionStatus'
+        payment_rail:
+          $ref: '#/components/schemas/PaymentRail'
+        redirect_url:
+          type: string
+        credits:
+          type: integer
+        enforced_document_number:
+          type: string
+        merchant_display_name:
+          type: string
+        payment_url:
+          type: string
+        created_at:
+          type: integer
+        processed_at:
+          type: integer
+      required:
+        - id
+        - amount_cents
+        - merchant
+        - status
+        - created_at
+    TransactionStatus:
+      type: string
+      enum:
+        - PENDING
+        - PROCESSING
+        - ERROR
+        - DECLINED
+        - APPROVED
+        - CANCELLED
   securitySchemes:
     BearerAuth:
       type: http
