@@ -69,7 +69,7 @@ paths:
                   description: >-
                     Descripción opcional para la solicitud de pago. Puede ser
                     una referencia de pago o algún texto breve que describa la
-                    transacción. El usuario nunca verá esta descripción.
+                    transacción. El usuario verá esta descripción.
                 redirect_url:
                   type: string
                   description: >-
@@ -288,6 +288,19 @@ paths:
                   description: >-
                     La fecha (YYYY-MM-DD) en la que se debe realizar el primer
                     pago.
+                enforced_document_number:
+                  type: string
+                  description: >-
+                    Impone que la cuenta de banco vinculada a Palomma para
+                    realizar el pago esté asociada con la cédula especificada.
+                    Principalmente util por temas de cumplimento de normativas.
+                    Utilice este campo si necesita verificar que la cuenta de
+                    banco que se vincula a Palomma para realizar el pago la
+                    pertenece al usuario que está registrado en su servicio. Si
+                    la cuenta de banco no está asociada con la cédula
+                    especificada, el usuario no podrá completar su pago. Si no
+                    se especifica, no se verifica la cédula. Esta verificación
+                    aún no está activa con todos los bancos disponibles.
               required:
                 - amount_cents
                 - redirect_url
