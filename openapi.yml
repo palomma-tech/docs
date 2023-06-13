@@ -200,6 +200,166 @@ paths:
                         enum:
                           - PaymentRequestNotFoundError
       summary: Revisar estado del pago
+  /payout-requests:
+    post:
+      operationId: payoutRequest_post
+      tags:
+        - PayoutRequest
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Payout'
+        '400':
+          description: ''
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - type: object
+                    properties:
+                      errorName:
+                        type: string
+                        enum:
+                          - BadRequestError
+                      content:
+                        $ref: '#/components/schemas/ErrorBody'
+        '401':
+          description: ''
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - type: object
+                    properties:
+                      errorName:
+                        type: string
+                        enum:
+                          - UnauthorizedError
+                      content:
+                        $ref: '#/components/schemas/ErrorBody'
+      summary: Crear solicitud de desembolso
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                payee_bank:
+                  type: string
+                  description: |-
+                    El código de la institución bancaria del beneficiario. 
+                     Opciones: santander - Banco Santander Colombia, coofinep - COOFINEP, avvillas - Banco AV Villas, cotrafa - Cotrafa, bancoagrario - Banco Agrario, bancoomeva - Bancoomeva, bancamia - Bancamía, coopcentral - Banco Cooperativo Coopcentral, citibank - Citibank, bancodebogota - Banco de Bogotá, bancocajasocial - Banco Caja Social, serfinanza - Banco Serfinanza, cfa - Cooperativa Financiera de Antioquia, coltefinanciera - Coltefinanciera, pichincha - Banco Pichincha, iris - IRIS, ban100 - Ban100 (antes Credifinanciera), bancopopular - Banco Popular, davivienda - Davivienda, mibanco - Mibanco, multibank - Multibank, mundo - Mujer, procreditcolombia - Procredit Colombia, bancow - Banco W, bancoldex - Bancóldex, juriscoop - Financiera Juriscoop, itauhelm - Itaú (Helm Bank), jpmorgancolombia - JP Morgan Colombia
+                payee_bank_account_type:
+                  $ref: '#/components/schemas/PayoutAccountType'
+                  description: >-
+                    El tipo de cuenta del beneficiario. Puede ser CHECKING -
+                    Corriente, SAVINGS - Ahorros.
+                payee_bank_account_number:
+                  type: string
+                  description: El número de cuenta del beneficiario.
+                payee_name:
+                  type: string
+                  description: El nombre del beneficiario (titular de la cuenta).
+                payee_document_type:
+                  $ref: '#/components/schemas/PayoutDocumentType'
+                  description: |-
+                    El tipo de documento de identidad del beneficiario. 
+                     Opciones: CC - Cédula, CE - Cédula de extranjería, NIT, TI - Tarjeta de Identidad, PP - Pasaporte
+                payee_document_number:
+                  type: string
+                  description: El número de documento de identidad del beneficiario.
+                amount_cents:
+                  type: integer
+                  description: El monto en centavos para desembolsar.
+              required:
+                - payee_bank
+                - payee_bank_account_type
+                - payee_bank_account_number
+                - payee_name
+                - payee_document_type
+                - payee_document_number
+                - amount_cents
+  /payout-requests/{payoutId}:
+    get:
+      operationId: payoutRequest_get
+      tags:
+        - PayoutRequest
+      parameters:
+        - name: payoutId
+          in: path
+          description: El identificador único de la solicitud de desembolso.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Payout'
+        '400':
+          description: ''
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - type: object
+                    properties:
+                      errorName:
+                        type: string
+                        enum:
+                          - BadRequestError
+                      content:
+                        $ref: '#/components/schemas/ErrorBody'
+        '401':
+          description: ''
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - type: object
+                    properties:
+                      errorName:
+                        type: string
+                        enum:
+                          - UnauthorizedError
+                      content:
+                        $ref: '#/components/schemas/ErrorBody'
+        '403':
+          description: ''
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - type: object
+                    properties:
+                      errorName:
+                        type: string
+                        enum:
+                          - ForbiddenError
+                      content:
+                        $ref: '#/components/schemas/ErrorBody'
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - type: object
+                    properties:
+                      errorName:
+                        type: string
+                        enum:
+                          - NotFoundError
+                      content:
+                        $ref: '#/components/schemas/ErrorBody'
+      summary: Obtener solicitud de desembolso
   /subscription-requests:
     post:
       operationId: subscriptionRequest_post
@@ -542,6 +702,77 @@ components:
         - id
         - status
         - amount_cents
+    PayoutAccountType:
+      type: string
+      enum:
+        - CHECKING
+        - SAVINGS
+    PayoutDocumentType:
+      type: string
+      enum:
+        - CC
+        - CE
+        - NIT
+        - TI
+        - PP
+    Payout:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Un identificador único para la solicitud de desembolso.
+        status:
+          type: string
+          description: >-
+            El estado de la solicitud de desembolso. Puede ser
+            MERCHANT_DEBIT_PENDING, MERCHANT_DEBIT_PROCESSING, PAYOUT_PENDING,
+            PAYOUT_PROCESSING, PAYOUT_SENT, MERCHANT_DEBIT_FAILED,
+            PAYOUT_FAILED.
+        amount_cents:
+          type: integer
+          description: El monto en centavos para desembolsar.
+        payee_bank:
+          type: string
+          description: |-
+            El código de la institución bancaria del beneficiario. 
+             Opciones: santander - Banco Santander Colombia, coofinep - COOFINEP, avvillas - Banco AV Villas, cotrafa - Cotrafa, bancoagrario - Banco Agrario, bancoomeva - Bancoomeva, bancamia - Bancamía, coopcentral - Banco Cooperativo Coopcentral, citibank - Citibank, bancodebogota - Banco de Bogotá, bancocajasocial - Banco Caja Social, serfinanza - Banco Serfinanza, cfa - Cooperativa Financiera de Antioquia, coltefinanciera - Coltefinanciera, pichincha - Banco Pichincha, iris - IRIS, ban100 - Ban100 (antes Credifinanciera), bancopopular - Banco Popular, davivienda - Davivienda, mibanco - Mibanco, multibank - Multibank, mundo - Mujer, procreditcolombia - Procredit Colombia, bancow - Banco W, bancoldex - Bancóldex, juriscoop - Financiera Juriscoop, itauhelm - Itaú (Helm Bank), jpmorgancolombia - JP Morgan Colombia
+        payee_bank_account_type:
+          $ref: '#/components/schemas/PayoutAccountType'
+          description: >-
+            El tipo de cuenta del beneficiario. Puede ser CHECKING - Corriente,
+            SAVINGS - Ahorros.
+        payee_bank_account_number:
+          type: string
+          description: El número de cuenta del beneficiario.
+        payee_name:
+          type: string
+          description: El nombre del beneficiario (titular de la cuenta).
+        payee_document_type:
+          $ref: '#/components/schemas/PayoutDocumentType'
+          description: |-
+            El tipo de documento de identidad del beneficiario. 
+             Opciones: CC - Cédula, CE - Cédula de extranjería, NIT, TI - Tarjeta de Identidad, PP - Pasaporte
+        payee_document_number:
+          type: string
+          description: El número de documento de identidad del beneficiario.
+        created_at:
+          type: integer
+          description: La fecha de creación de la solicitud de desembolso.
+        last_modified:
+          type: integer
+          description: La fecha de la última modificación de la solicitud de desembolso.
+      required:
+        - id
+        - status
+        - amount_cents
+        - payee_bank
+        - payee_bank_account_type
+        - payee_bank_account_number
+        - payee_name
+        - payee_document_type
+        - payee_document_number
+        - created_at
+        - last_modified
     CreateSubscriptionRequestResponse:
       type: object
       properties:
