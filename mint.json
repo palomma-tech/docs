@@ -47,10 +47,12 @@
     {
       "group": "Nuestra API",
       "pages": [
-        "api-reference/create-payment-request",
-        "api-reference/get-payment-request",
-        "api-reference/create-subscription-request",
-        "api-reference/delete-subscription-request"
+        "api-reference/payment-request/post",
+        "api-reference/payment-request/get",
+        "api-reference/subscription-request/post",
+        "api-reference/subscription-request/delete",
+        "api-reference/payout-request/post",
+        "api-reference/payout-request/get"
       ]
     },
     {
