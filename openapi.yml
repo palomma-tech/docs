@@ -250,10 +250,30 @@ paths:
               type: object
               properties:
                 payee_bank:
-                  type: string
-                  description: |-
+                  $ref: '#/components/schemas/PayoutBank'
+                  description: >-
                     El código de la institución bancaria del beneficiario. 
-                     Opciones: santander - Banco Santander Colombia, coofinep - COOFINEP, avvillas - Banco AV Villas, cotrafa - Cotrafa, bancoagrario - Banco Agrario, bancoomeva - Bancoomeva, bancamia - Bancamía, coopcentral - Banco Cooperativo Coopcentral, citibank - Citibank, bancodebogota - Banco de Bogotá, bancocajasocial - Banco Caja Social, serfinanza - Banco Serfinanza, cfa - Cooperativa Financiera de Antioquia, coltefinanciera - Coltefinanciera, pichincha - Banco Pichincha, iris - IRIS, ban100 - Ban100 (antes Credifinanciera), bancopopular - Banco Popular, davivienda - Davivienda, mibanco - Mibanco, multibank - Multibank, mundo - Mujer, procreditcolombia - Procredit Colombia, bancow - Banco W, bancoldex - Bancóldex, juriscoop - Financiera Juriscoop, itauhelm - Itaú (Helm Bank), jpmorgancolombia - JP Morgan Colombia
+                    Opciones: santander - Banco Santander Colombia, coofinep -
+                    COOFINEP, avvillas - Banco AV Villas, cotrafa - Cotrafa,
+                    confiar - Confiar, union - Banco Union (antes Giros), nequi
+                    - Nequi, bancoagrario - Banco Agrario, bancoomeva -
+                    Bancoomeva, bancamia - Bancamía, coopcentral - Banco
+                    Cooperativo Coopcentral, citibank - Citibank,
+                    bancodeoccidente - Banco de Occidente, falabella - Banco
+                    Falabella, bancodebogota - Banco de Bogotá, bancocajasocial
+                    - Banco Caja Social, serfinanza - Banco Serfinanza, cfa -
+                    Cooperativa Financiera de Antioquia, coltefinanciera -
+                    Coltefinanciera, pichincha - Banco Pichincha, iris - IRIS,
+                    ban100 - Ban100 (antes Credifinanciera), bancopopular -
+                    Banco Popular, daviplata - DaviPlata, bancolombia -
+                    Bancolombia, finandina - Banco Finandina,
+                    scotiabankcolpatria - Scotiabank Colpatria, gnbsudameris -
+                    GNB Sudameris, itau - Banco Itaú, bbva - BBVA Colombia,
+                    davivienda - Davivienda, mibanco - Mibanco, multibank -
+                    Multibank, mundomujer - Mundo Mujer, procreditcolombia -
+                    Procredit Colombia, bancow - Banco W, bancoldex - Bancóldex,
+                    juriscoop - Financiera Juriscoop, itauhelm - Itaú (Helm
+                    Bank), jpmorgancolombia - JP Morgan Colombia
                 payee_bank_account_type:
                   $ref: '#/components/schemas/PayoutAccountType'
                   description: >-
@@ -267,9 +287,10 @@ paths:
                   description: El nombre del beneficiario (titular de la cuenta).
                 payee_document_type:
                   $ref: '#/components/schemas/PayoutDocumentType'
-                  description: |-
+                  description: >-
                     El tipo de documento de identidad del beneficiario. 
-                     Opciones: CC - Cédula, CE - Cédula de extranjería, NIT, TI - Tarjeta de Identidad, PP - Pasaporte
+                    Opciones: CC - Cédula, CE - Cédula de extranjería, NIT, TI -
+                    Tarjeta de Identidad, PP - Pasaporte
                 payee_document_number:
                   type: string
                   description: El número de documento de identidad del beneficiario.
@@ -715,6 +736,49 @@ components:
         - NIT
         - TI
         - PP
+    PayoutBank:
+      type: string
+      enum:
+        - santander
+        - coofinep
+        - avvillas
+        - cotrafa
+        - confiar
+        - union
+        - nequi
+        - bancoagrario
+        - bancoomeva
+        - bancamia
+        - coopcentral
+        - citibank
+        - bancodeoccidente
+        - falabella
+        - bancodebogota
+        - bancocajasocial
+        - serfinanza
+        - cfa
+        - coltefinanciera
+        - pichincha
+        - iris
+        - ban100
+        - bancopopular
+        - daviplata
+        - bancolombia
+        - finandina
+        - scotiabankcolpatria
+        - gnbsudameris
+        - itau
+        - bbva
+        - davivienda
+        - mibanco
+        - multibank
+        - mundomujer
+        - procreditcolombia
+        - bancow
+        - bancoldex
+        - juriscoop
+        - itauhelm
+        - jpmorgancolombia
     Payout:
       type: object
       properties:
@@ -732,10 +796,27 @@ components:
           type: integer
           description: El monto en centavos para desembolsar.
         payee_bank:
-          type: string
-          description: |-
-            El código de la institución bancaria del beneficiario. 
-             Opciones: santander - Banco Santander Colombia, coofinep - COOFINEP, avvillas - Banco AV Villas, cotrafa - Cotrafa, bancoagrario - Banco Agrario, bancoomeva - Bancoomeva, bancamia - Bancamía, coopcentral - Banco Cooperativo Coopcentral, citibank - Citibank, bancodebogota - Banco de Bogotá, bancocajasocial - Banco Caja Social, serfinanza - Banco Serfinanza, cfa - Cooperativa Financiera de Antioquia, coltefinanciera - Coltefinanciera, pichincha - Banco Pichincha, iris - IRIS, ban100 - Ban100 (antes Credifinanciera), bancopopular - Banco Popular, davivienda - Davivienda, mibanco - Mibanco, multibank - Multibank, mundo - Mujer, procreditcolombia - Procredit Colombia, bancow - Banco W, bancoldex - Bancóldex, juriscoop - Financiera Juriscoop, itauhelm - Itaú (Helm Bank), jpmorgancolombia - JP Morgan Colombia
+          $ref: '#/components/schemas/PayoutBank'
+          description: >-
+            El código de la institución bancaria del beneficiario.  Opciones:
+            santander - Banco Santander Colombia, coofinep - COOFINEP, avvillas
+            - Banco AV Villas, cotrafa - Cotrafa, confiar - Confiar, union -
+            Banco Union (antes Giros), nequi - Nequi, bancoagrario - Banco
+            Agrario, bancoomeva - Bancoomeva, bancamia - Bancamía, coopcentral -
+            Banco Cooperativo Coopcentral, citibank - Citibank, bancodeoccidente
+            - Banco de Occidente, falabella - Banco Falabella, bancodebogota -
+            Banco de Bogotá, bancocajasocial - Banco Caja Social, serfinanza -
+            Banco Serfinanza, cfa - Cooperativa Financiera de Antioquia,
+            coltefinanciera - Coltefinanciera, pichincha - Banco Pichincha, iris
+            - IRIS, ban100 - Ban100 (antes Credifinanciera), bancopopular -
+            Banco Popular, daviplata - DaviPlata, bancolombia - Bancolombia,
+            finandina - Banco Finandina, scotiabankcolpatria - Scotiabank
+            Colpatria, gnbsudameris - GNB Sudameris, itau - Banco Itaú, bbva -
+            BBVA Colombia, davivienda - Davivienda, mibanco - Mibanco, multibank
+            - Multibank, mundomujer - Mundo Mujer, procreditcolombia - Procredit
+            Colombia, bancow - Banco W, bancoldex - Bancóldex, juriscoop -
+            Financiera Juriscoop, itauhelm - Itaú (Helm Bank), jpmorgancolombia
+            - JP Morgan Colombia
         payee_bank_account_type:
           $ref: '#/components/schemas/PayoutAccountType'
           description: >-
@@ -749,9 +830,10 @@ components:
           description: El nombre del beneficiario (titular de la cuenta).
         payee_document_type:
           $ref: '#/components/schemas/PayoutDocumentType'
-          description: |-
-            El tipo de documento de identidad del beneficiario. 
-             Opciones: CC - Cédula, CE - Cédula de extranjería, NIT, TI - Tarjeta de Identidad, PP - Pasaporte
+          description: >-
+            El tipo de documento de identidad del beneficiario.  Opciones: CC -
+            Cédula, CE - Cédula de extranjería, NIT, TI - Tarjeta de Identidad,
+            PP - Pasaporte
         payee_document_number:
           type: string
           description: El número de documento de identidad del beneficiario.
