@@ -447,6 +447,7 @@ paths:
                   description: >-
                     La URL a la que se redirecciona al usuario cuando haya
                     terminado el flujo de suscripción a través de Palomma.
+                  example: https://palomma.com
                 description:
                   type: string
                   description: >-
@@ -463,12 +464,11 @@ paths:
                 count:
                   type: integer
                   description: Número de pagos que se deben hacer por esta suscripción
-                cancel_on_failure:
-                  type: boolean
+                start_date:
+                  type: string
                   description: >-
-                    Especifica si se debe cancelar la suscripción cuando falla
-                    un pago y los reintentos de cobro de Palomma no fueron
-                    exitosos. Por defecto no se cancela.
+                    La fecha (YYYY-MM-DD) en la que se debe realizar el primer
+                    pago.
                 enforced_document_number:
                   type: string
                   description: >-
@@ -482,25 +482,16 @@ paths:
                     especificada, el usuario no podrá completar su pago. Si no
                     se especifica, no se verifica la cédula. Esta verificación
                     aún no está activa con todos los bancos disponibles.
-                merchant_display_name:
-                  type: string
-                  description: >-
-                    Especifica un nombre alternativo para el comercio que se le
-                    muestra al usuario.
-                merchant_support_info:
-                  type: string
-                  description: >-
-                    Información de contacto alternativa que se le muestra al
-                    usuario en la confirmación de pago.
               required:
                 - amount_cents
+                - redirect_url
                 - interval_unit
             examples:
               Example1:
                 value:
                   amount_cents: 300000
                   description: Pay subscription
-                  redirect_url: https://www.palomma.com
+                  redirect_url: https://palomma.com
                   interval_unit: month
   /subscription-requests/{subscriptionId}:
     get:
@@ -680,7 +671,6 @@ components:
         - nequi_token
         - daviplata_api
         - pse
-        - ach
     ErrorBody:
       type: object
       properties:
@@ -921,6 +911,7 @@ components:
     IntervalUnit:
       type: string
       enum:
+        - day
         - week
         - month
         - year
