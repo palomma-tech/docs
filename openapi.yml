@@ -935,8 +935,12 @@ components:
           $ref: '#/components/schemas/MerchantId'
         status:
           $ref: '#/components/schemas/TransactionStatus'
+        status_message:
+          type: string
         payment_rail:
           $ref: '#/components/schemas/PaymentRail'
+        payment_rail_transaction_id:
+          type: string
         redirect_url:
           type: string
         credits:
