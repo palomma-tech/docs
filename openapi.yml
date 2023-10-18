@@ -66,12 +66,14 @@ paths:
                   example: 300000
                 description:
                   type: string
+                  nullable: true
                   description: >-
                     Descripción opcional para la solicitud de pago. Puede ser
                     una referencia de pago o algún texto breve que describa la
                     transacción. El usuario verá esta descripción.
                 redirect_url:
                   type: string
+                  nullable: true
                   description: >-
                     La URL a la que se redirecciona al usuario cuando haya
                     terminado el pago a través de Palomma. Sobreescribe la URL
@@ -79,14 +81,27 @@ paths:
                     [Onboarding](/general/onboarding).
                 ttl:
                   type: integer
+                  nullable: true
                   description: >-
                     El tiempo en segundos que puede quedar la transacción en
                     estado pendiente antes de ser cancelada. Si no se especifica
                     y no está especificado para tu comercio en el
                     [Onboarding](/general/onboarding), la solicitud de pago no
                     expira.
+                user_information:
+                  $ref: '#/components/schemas/UserInformation'
+                  nullable: true
+                  description: >-
+                    Información del usuario que está realizando el pago. Si no
+                    se incluye, se le pedirá al usuario que ingrese su
+                    información. Esta información se utiliza solamente para
+                    prellenar el registro de usuarios a Palomma. Como el usuario
+                    puede modificarla en el registro, o puede ya estar
+                    registrado en Palomma, no garantizamos que se utilice esta
+                    información para procesar el pago.
                 enforced_document_number:
                   type: string
+                  nullable: true
                   description: >-
                     Impone que la cuenta de banco vinculada a Palomma para
                     realizar el pago esté asociada con la cédula especificada.
@@ -100,11 +115,13 @@ paths:
                     aún no está activa con todos los bancos disponibles.
                 merchant_display_name:
                   type: string
+                  nullable: true
                   description: >-
                     Especifica un nombre alternativo para el comercio que se le
                     muestra al usuario.
                 merchant_support_info:
                   type: string
+                  nullable: true
                   description: >-
                     Información de contacto alternativa que se le muestra al
                     usuario en la confirmación de pago.
@@ -444,16 +461,19 @@ paths:
                   example: 300000
                 redirect_url:
                   type: string
+                  nullable: true
                   description: >-
                     La URL a la que se redirecciona al usuario cuando haya
                     terminado el flujo de suscripción a través de Palomma.
                 description:
                   type: string
+                  nullable: true
                   description: >-
                     Descripción opcional para la suscripción. Puede ser una
                     referencia o algún texto breve que describa la suscripción.
                 interval:
                   type: integer
+                  nullable: true
                   description: >-
                     Número de interal_units entre fechas de cobro. Debe ser
                     mayor o igual a 1. Por defecto es 1.
@@ -462,15 +482,29 @@ paths:
                   description: Unidad para especificar tiempo entre fechas de cobro.
                 count:
                   type: integer
+                  nullable: true
                   description: Número de pagos que se deben hacer por esta suscripción
                 cancel_on_failure:
                   type: boolean
+                  nullable: true
                   description: >-
                     Especifica si se debe cancelar la suscripción cuando falla
                     un pago y los reintentos de cobro de Palomma no fueron
                     exitosos. Por defecto no se cancela.
+                user_information:
+                  $ref: '#/components/schemas/UserInformation'
+                  nullable: true
+                  description: >-
+                    Información del usuario que está realizando el pago. Si no
+                    se incluye, se le pedirá al usuario que ingrese su
+                    información. Esta información se utiliza solamente para
+                    prellenar el registro de usuarios a Palomma. Como el usuario
+                    puede modificarla en el registro, o puede ya estar
+                    registrado en Palomma, no garantizamos que se utilice esta
+                    información para procesar el pago.
                 enforced_document_number:
                   type: string
+                  nullable: true
                   description: >-
                     Impone que la cuenta de banco vinculada a Palomma para
                     realizar el pago esté asociada con la cédula especificada.
@@ -484,11 +518,13 @@ paths:
                     aún no está activa con todos los bancos disponibles.
                 merchant_display_name:
                   type: string
+                  nullable: true
                   description: >-
                     Especifica un nombre alternativo para el comercio que se le
                     muestra al usuario.
                 merchant_support_info:
                   type: string
+                  nullable: true
                   description: >-
                     Información de contacto alternativa que se le muestra al
                     usuario en la confirmación de pago.
@@ -668,12 +704,16 @@ paths:
 components:
   schemas:
     MerchantId:
+      title: MerchantId
       type: string
     TransactionId:
+      title: TransactionId
       type: string
     SubscriptionId:
+      title: SubscriptionId
       type: string
     PaymentRail:
+      title: PaymentRail
       type: string
       enum:
         - bancolombia_token
@@ -681,12 +721,95 @@ components:
         - daviplata_api
         - pse
         - ach
+    UserInformation:
+      title: UserInformation
+      oneOf:
+        - type: object
+          allOf:
+            - type: object
+              properties:
+                user_type:
+                  type: string
+                  enum:
+                    - natural
+            - $ref: '#/components/schemas/PersonInformation'
+          required:
+            - user_type
+        - type: object
+          allOf:
+            - type: object
+              properties:
+                user_type:
+                  type: string
+                  enum:
+                    - legal
+            - $ref: '#/components/schemas/BusinessInformation'
+          required:
+            - user_type
+      properties:
+        phone_number:
+          description: >-
+            El número de teléfono del usuario. Debe incluir el código de país.
+            Ejemplo: +573001234567
+          type: string
+          nullable: true
+        email:
+          description: El correo electrónico del usuario.
+          type: string
+          nullable: true
+        document_number:
+          description: El número de documento de identidad del usuario.
+          type: string
+          nullable: true
+    PersonInformation:
+      title: PersonInformation
+      type: object
+      properties:
+        document_type:
+          $ref: '#/components/schemas/PersonDocumentTypes'
+          nullable: true
+          description: El tipo de documento de identidad del usuario.
+        first_name:
+          type: string
+          nullable: true
+          description: El primer nombre del usuario.
+        last_name:
+          type: string
+          nullable: true
+          description: El apellido del usuario.
+    PersonDocumentTypes:
+      title: PersonDocumentTypes
+      type: string
+      enum:
+        - CC
+        - CE
+        - TI
+    BusinessInformation:
+      title: BusinessInformation
+      type: object
+      properties:
+        document_type:
+          $ref: '#/components/schemas/BusinessDocumentTypes'
+          nullable: true
+          description: El tipo de documento de identidad del usuario.
+        business_name:
+          type: string
+          nullable: true
+          description: El nombre de la empresa.
+    BusinessDocumentTypes:
+      title: BusinessDocumentTypes
+      type: string
+      enum:
+        - NIT
     ErrorBody:
+      title: ErrorBody
       type: object
       properties:
         message:
           type: string
+          nullable: true
     CreatePaymentRequestResponse:
+      title: CreatePaymentRequestResponse
       type: object
       properties:
         id:
@@ -703,6 +826,7 @@ components:
         - id
         - payment_url
     PaymentRequest:
+      title: PaymentRequest
       type: object
       properties:
         id:
@@ -720,11 +844,13 @@ components:
           example: 300000
         description:
           type: string
+          nullable: true
           description: >-
             Descripción opcional para la solicitud de pago. Puede ser una
             referencia de pago o algún texto breve que describa la transacción.
         enforced_document_number:
           type: string
+          nullable: true
           description: >-
             La cédula que debe corresponder a la asociada con la cuenta de banco
             de la cual se hace el pago. Si no se especificó, no se verifica la
@@ -734,11 +860,13 @@ components:
         - status
         - amount_cents
     PayoutAccountType:
+      title: PayoutAccountType
       type: string
       enum:
         - CHECKING
         - SAVINGS
     PayoutDocumentType:
+      title: PayoutDocumentType
       type: string
       enum:
         - CC
@@ -747,6 +875,7 @@ components:
         - TI
         - PP
     PayoutBank:
+      title: PayoutBank
       type: string
       enum:
         - santander
@@ -790,6 +919,7 @@ components:
         - itauhelm
         - jpmorgancolombia
     Payout:
+      title: Payout
       type: object
       properties:
         id:
@@ -866,6 +996,7 @@ components:
         - created_at
         - last_modified
     CreateSubscriptionRequestResponse:
+      title: CreateSubscriptionRequestResponse
       type: object
       properties:
         id:
@@ -882,6 +1013,7 @@ components:
         - id
         - subscription_url
     SubscriptionRequest:
+      title: SubscriptionRequest
       type: object
       properties:
         id:
@@ -897,11 +1029,13 @@ components:
           example: 300000
         description:
           type: string
+          nullable: true
           description: >-
             Descripción opcional para la solicitud de suscripción. Puede ser una
             referencia o algún texto breve que describa la suscripción.
         interval:
           type: integer
+          nullable: true
           description: >-
             Número de interal_units entre fechas de cobro. Debe ser mayor o
             igual a 1. Por defecto es 1.
@@ -919,12 +1053,14 @@ components:
         - interval_unit
         - past_payments
     IntervalUnit:
+      title: IntervalUnit
       type: string
       enum:
         - week
         - month
         - year
     Transaction:
+      title: Transaction
       type: object
       properties:
         id:
@@ -937,31 +1073,38 @@ components:
           $ref: '#/components/schemas/TransactionStatus'
         status_message:
           type: string
+          nullable: true
         payment_rail:
           $ref: '#/components/schemas/PaymentRail'
+          nullable: true
         payment_rail_transaction_id:
           type: string
+          nullable: true
         redirect_url:
           type: string
+          nullable: true
         credits:
           type: integer
+          nullable: true
+        user_information:
+          $ref: '#/components/schemas/UserInformation'
+          nullable: true
         enforced_document_number:
           type: string
+          nullable: true
         merchant_display_name:
           type: string
+          nullable: true
         payment_url:
           type: string
-        created_at:
-          type: integer
-        processed_at:
-          type: integer
+          nullable: true
       required:
         - id
         - amount_cents
         - merchant
         - status
-        - created_at
     TransactionStatus:
+      title: TransactionStatus
       type: string
       enum:
         - PENDING
