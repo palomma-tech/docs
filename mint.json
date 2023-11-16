@@ -49,8 +49,6 @@
       "pages": [
         "api-reference/payment-request/post",
         "api-reference/payment-request/get",
-        "api-reference/subscription-request/post",
-        "api-reference/subscription-request/delete",
         "api-reference/payout-request/post",
         "api-reference/payout-request/get"
       ]
