@@ -62,8 +62,8 @@ paths:
                   type: integer
                   description: >-
                     El monto de la transacción en centavos. Debe ser mayor a
-                    300.000, y menor a 80.000.000.
-                  example: 300000
+                    500.000 (5.000), y menor al monto máximo negociado.
+                  example: 500000
                 description:
                   type: string
                   nullable: true
@@ -130,7 +130,7 @@ paths:
             examples:
               Example1:
                 value:
-                  amount_cents: 300000
+                  amount_cents: 500000
                   description: Pay subscription
                   redirect_url: https://palomma.com
   /payment-requests/{transactionId}:
@@ -160,7 +160,7 @@ paths:
                   value:
                     id: 8f59ec29-3e8a-4cbd-b4c0-4f480b1fac15
                     status: PENDING
-                    amount_cents: 300000
+                    amount_cents: 500000
                     description: Pay subscription
         '400':
           description: ''
@@ -523,7 +523,7 @@ components:
         amount_cents:
           type: integer
           description: El monto de la transacción en centavos.
-          example: 300000
+          example: 500000
         description:
           type: string
           nullable: true
