@@ -620,7 +620,7 @@ components:
         payee_bank:
           $ref: '#/components/schemas/PayoutBank'
           description: >-
-            El código de la institución bancaria del beneficiario.  Opciones:
+            El código de la institución bancaria del beneficiario. Opciones:
             santander - Banco Santander Colombia, coofinep - COOFINEP, avvillas
             - Banco AV Villas, cotrafa - Cotrafa, confiar - Confiar, union -
             Banco Union (antes Giros), nequi - Nequi, bancoagrario - Banco
@@ -653,7 +653,7 @@ components:
         payee_document_type:
           $ref: '#/components/schemas/PayoutDocumentType'
           description: >-
-            El tipo de documento de identidad del beneficiario.  Opciones: CC -
+            El tipo de documento de identidad del beneficiario. Opciones: CC -
             Cédula, CE - Cédula de extranjería, NIT, TI - Tarjeta de Identidad,
             PP - Pasaporte
         payee_document_number:
@@ -682,7 +682,7 @@ components:
       type: http
       scheme: bearer
 servers:
-  - url: https://api.pay.palomma.com/
+  - url: https://api.pay.palomma.com
     description: Production
-  - url: https://api.sandbox-pay.palomma.com/
+  - url: https://api.sandbox-pay.palomma.com
     description: Sandbox
