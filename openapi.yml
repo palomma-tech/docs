@@ -537,6 +537,10 @@ components:
             La cédula que debe corresponder a la asociada con la cuenta de banco
             de la cual se hace el pago. Si no se especificó, no se verifica la
             cédula.
+        document_number:
+          type: string
+          nullable: true
+          description: La cédula del usuario que está realizando el pago.
       required:
         - id
         - status
