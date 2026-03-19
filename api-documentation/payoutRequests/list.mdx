@@ -13,7 +13,7 @@ import axios from "axios";
 
 const getPage = async (input: { limit?: number; cursor?: string }) => {
   const response = await axios.get(
-    "https://prod.api.palomma.com/v0/payoutRequests",
+    "https://api.palomma.com/v0/payoutRequests",
     {
       headers: {
         Authorization: "Bearer <token>",

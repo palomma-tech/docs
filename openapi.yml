@@ -4,7 +4,7 @@ info:
   description: This API includes functionality of the Palomma API.
   version: 1.0.0
 servers:
-  - url: https://prod.api.palomma.com/v0
+  - url: https://api.palomma.com/v0
     description: Production server
   - url: https://sandbox.api.palomma.com/v0
     description: Sandbox server

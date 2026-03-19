@@ -12,17 +12,14 @@ openapi: "GET /merchantAccounts"
 import axios from "axios";
 
 const getPage = async (input: { limit?: number; cursor?: string }) => {
-  const response = await axios.get(
-    "https://prod.api.palomma.com/v0/customers",
-    {
-      headers: {
-        Authorization: "Bearer <token>",
-      },
-      params: {
-        ...input,
-      },
-    }
-  );
+  const response = await axios.get("https://api.palomma.com/v0/customers", {
+    headers: {
+      Authorization: "Bearer <token>",
+    },
+    params: {
+      ...input,
+    },
+  });
   if (!response.data) throw new Error();
   const { items, cursor, count } = response.data;
   return { items, cursor, count };
